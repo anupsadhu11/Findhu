@@ -754,97 +754,9 @@ async def submit_contact(contact: ContactRequest):
     
     return {"success": True, "message": "Thank you! We will contact you soon."}
 
-# ============ PERSONAL FINANCE ENDPOINTS ============
+# ============ AI ADVISOR ENDPOINT ============
 
-@api_router.post("/finance/transaction")
-async def create_transaction(transaction: TransactionCreate, request: Request):
-    """Add transaction"""
-    user = await require_auth(request)
-    
-    trans_data = transaction.model_dump()
-    trans_data["date"] = datetime.fromisoformat(trans_data["date"].replace('Z', '+00:00'))
-    
-    new_transaction = Transaction(
-        user_id=user.id,
-        **trans_data
-    )
-    
-    trans_dict = new_transaction.model_dump()
-    trans_dict["date"] = trans_dict["date"].isoformat()
-    trans_dict["created_at"] = trans_dict["created_at"].isoformat()
-    await db.transactions.insert_one(trans_dict)
-    
-    return new_transaction
-
-@api_router.get("/finance/transactions")
-async def get_transactions(request: Request, limit: int = 100):
-    """Get all transactions for user"""
-    user = await require_auth(request)
-    
-    transactions = await db.transactions.find(
-        {"user_id": user.id},
-        {"_id": 0}
-    ).sort("date", -1).limit(limit).to_list(limit)
-    
-    return transactions
-
-@api_router.post("/finance/bill")
-async def create_bill(bill: BillCreate, request: Request):
-    """Add bill reminder"""
-    user = await require_auth(request)
-    
-    new_bill = Bill(
-        user_id=user.id,
-        **bill.model_dump()
-    )
-    
-    bill_dict = new_bill.model_dump()
-    bill_dict["created_at"] = bill_dict["created_at"].isoformat()
-    await db.bills.insert_one(bill_dict)
-    
-    return new_bill
-
-@api_router.get("/finance/bills")
-async def get_bills(request: Request):
-    """Get all bills for user"""
-    user = await require_auth(request)
-    
-    bills = await db.bills.find(
-        {"user_id": user.id},
-        {"_id": 0}
-    ).sort("due_date", 1).to_list(100)
-    
-    return bills
-
-@api_router.post("/finance/goal")
-async def create_goal(goal: GoalCreate, request: Request):
-    """Create financial goal"""
-    user = await require_auth(request)
-    
-    new_goal = FinancialGoal(
-        user_id=user.id,
-        **goal.model_dump()
-    )
-    
-    goal_dict = new_goal.model_dump()
-    goal_dict["created_at"] = goal_dict["created_at"].isoformat()
-    await db.financial_goals.insert_one(goal_dict)
-    
-    return new_goal
-
-@api_router.get("/finance/goals")
-async def get_goals(request: Request):
-    """Get all financial goals"""
-    user = await require_auth(request)
-    
-    goals = await db.financial_goals.find(
-        {"user_id": user.id},
-        {"_id": 0}
-    ).to_list(100)
-    
-    return goals
-
-@api_router.post("/finance/ai-advice")
+@api_router.post("/ai/advice")
 async def get_ai_advice(advice_req: AIAdviceRequest, request: Request):
     """Get AI-powered financial advice"""
     user = await require_auth(request)
