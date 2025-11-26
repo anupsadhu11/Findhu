@@ -313,6 +313,111 @@ const BankingConsultancy = () => {
             </div>
           </TabsContent>
 
+          {/* EMI Calculator */}
+          <TabsContent value="emi">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <Card className="p-6 rounded-2xl border-2 border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 mb-6">EMI Calculator</h2>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="principal">Loan Amount (₹) *</Label>
+                    <Input
+                      id="principal"
+                      data-testid="principal-input"
+                      type="number"
+                      placeholder="500000"
+                      value={emiData.principal}
+                      onChange={(e) => setEmiData({...emiData, principal: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="interest-rate">Interest Rate (% per annum) *</Label>
+                    <Input
+                      id="interest-rate"
+                      data-testid="interest-rate-input"
+                      type="number"
+                      step="0.1"
+                      placeholder="8.5"
+                      value={emiData.interest_rate}
+                      onChange={(e) => setEmiData({...emiData, interest_rate: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="tenure">Loan Tenure *</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="tenure"
+                        data-testid="tenure-input"
+                        type="number"
+                        placeholder="24"
+                        value={emiData.tenure}
+                        onChange={(e) => setEmiData({...emiData, tenure: e.target.value})}
+                        className="flex-1"
+                      />
+                      <Select 
+                        value={emiData.tenure_type} 
+                        onValueChange={(value) => setEmiData({...emiData, tenure_type: value})}
+                      >
+                        <SelectTrigger className="w-32" data-testid="tenure-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="months">Months</SelectItem>
+                          <SelectItem value="years">Years</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={calculateEMI}
+                    data-testid="calculate-emi-button"
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white py-6 rounded-xl font-semibold"
+                  >
+                    Calculate EMI
+                  </Button>
+                </div>
+              </Card>
+
+              {emiResult && (
+                <Card className="p-6 rounded-2xl border-2 border-violet-100 bg-violet-50/50" data-testid="emi-result">
+                  <h3 className="text-xl font-bold text-slate-900 mb-6">EMI Calculation Result</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="p-4 bg-white rounded-xl">
+                      <p className="text-sm text-slate-600 mb-1">Monthly EMI</p>
+                      <p className="text-3xl font-bold text-violet-600">₹{emiResult.emi.toLocaleString('en-IN')}</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-4 bg-white rounded-xl">
+                        <p className="text-sm text-slate-600 mb-1">Principal Amount</p>
+                        <p className="text-xl font-bold text-slate-900">₹{emiResult.principal.toLocaleString('en-IN')}</p>
+                      </div>
+                      <div className="p-4 bg-white rounded-xl">
+                        <p className="text-sm text-slate-600 mb-1">Total Interest</p>
+                        <p className="text-xl font-bold text-amber-600">₹{emiResult.totalInterest.toLocaleString('en-IN')}</p>
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-white rounded-xl">
+                      <p className="text-sm text-slate-600 mb-1">Total Payment (Principal + Interest)</p>
+                      <p className="text-2xl font-bold text-slate-900">₹{emiResult.totalPayment.toLocaleString('en-IN')}</p>
+                    </div>
+
+                    <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                      <p className="text-sm text-emerald-800 mb-2">
+                        <span className="font-semibold">Tenure:</span> {emiResult.tenureMonths} months
+                      </p>
+                      <p className="text-xs text-emerald-700">
+                        Pay ₹{emiResult.emi.toLocaleString('en-IN')} every month for {emiResult.tenureMonths} months
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              )}
+            </div>
+          </TabsContent>
+
           {/* Investment Analysis */}
           <TabsContent value="investment">
             <div className="grid lg:grid-cols-2 gap-6">
