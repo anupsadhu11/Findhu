@@ -83,61 +83,23 @@ const Dashboard = () => {
           </Button>
         </div>
 
-        {/* Recent Activity */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Recent Transactions */}
-          <Card className="p-6 rounded-2xl border-2 border-slate-100">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Recent Transactions</h2>
-            {dashboard?.recent_transactions?.length > 0 ? (
-              <div className="space-y-3">
-                {dashboard.recent_transactions.slice(0, 5).map((transaction, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        transaction.type === 'income' ? 'bg-emerald-100' : 'bg-rose-100'
-                      }`}>
-                        <span className={transaction.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}>
-                          {transaction.type === 'income' ? '+' : '-'}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-medium text-slate-900">{transaction.description}</p>
-                        <p className="text-sm text-slate-500">{transaction.category}</p>
-                      </div>
-                    </div>
-                    <span className={`font-semibold ${
-                      transaction.type === 'income' ? 'text-emerald-600' : 'text-rose-600'
-                    }`}>
-                      {transaction.type === 'income' ? '+' : '-'}₹{transaction.amount?.toLocaleString('en-IN')}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-slate-500 text-center py-8">No transactions yet</p>
-            )}
-          </Card>
-
-          {/* Upcoming Bills */}
-          <Card className="p-6 rounded-2xl border-2 border-slate-100">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Upcoming Bills</h2>
-            {dashboard?.upcoming_bills?.length > 0 ? (
-              <div className="space-y-3">
-                {dashboard.upcoming_bills.map((bill, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-amber-50 rounded-xl border border-amber-100">
-                    <div>
-                      <p className="font-medium text-slate-900">{bill.name}</p>
-                      <p className="text-sm text-slate-500">Due: {bill.due_date}</p>
-                    </div>
-                    <span className="font-semibold text-amber-600">₹{bill.amount?.toLocaleString('en-IN')}</span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-slate-500 text-center py-8">No upcoming bills</p>
-            )}
-          </Card>
-        </div>
+        {/* Welcome Message */}
+        <Card className="p-8 rounded-2xl border-2 border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">
+              Welcome to FinWise - Your Financial Consultancy Partner
+            </h2>
+            <p className="text-slate-600 mb-6">
+              Get expert guidance on banking, property, tax, and financial planning. Select a service below to get started.
+            </p>
+            <div className="flex items-center justify-center space-x-2 text-emerald-700">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-medium">All services powered by AI</span>
+            </div>
+          </div>
+        </Card>
       </div>
     </Layout>
   );
