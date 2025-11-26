@@ -223,7 +223,7 @@ const Landing = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              Contact Us / संपर्क करें
+              Contact Us / संपर्क करें / যোগাযোগ করুন
             </h2>
             <p className="text-lg text-slate-600">
               Have questions? We're here to help. Reach out to us!
