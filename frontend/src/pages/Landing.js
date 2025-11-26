@@ -234,18 +234,18 @@ const Landing = () => {
             <form onSubmit={handleContactSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="contact-name">Name / नाम *</Label>
+                  <Label htmlFor="contact-name">Name / नाम / নাম *</Label>
                   <Input 
                     id="contact-name" 
                     name="name" 
                     data-testid="contact-name-input"
-                    placeholder="Your name"
+                    placeholder="Your name / আপনার নাম"
                     required 
                     className="mt-2"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="contact-phone">Phone / फ़ोन *</Label>
+                  <Label htmlFor="contact-phone">Phone / फ़ोन / ফোন *</Label>
                   <Input 
                     id="contact-phone" 
                     name="phone" 
@@ -257,7 +257,7 @@ const Landing = () => {
                 </div>
               </div>
               <div>
-                <Label htmlFor="contact-email">Email *</Label>
+                <Label htmlFor="contact-email">Email / ইমেইল *</Label>
                 <Input 
                   id="contact-email" 
                   name="email" 
@@ -269,12 +269,12 @@ const Landing = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="contact-message">Message / संदेश *</Label>
+                <Label htmlFor="contact-message">Message / संदेश / বার্তা *</Label>
                 <Textarea 
                   id="contact-message" 
                   name="message" 
                   data-testid="contact-message-input"
-                  placeholder="How can we help you?"
+                  placeholder="How can we help you? / আমরা কিভাবে সাহায্য করতে পারি?"
                   rows={5}
                   required 
                   className="mt-2"
@@ -286,7 +286,7 @@ const Landing = () => {
                 disabled={contactLoading}
                 className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-xl text-lg font-semibold"
               >
-                {contactLoading ? 'Submitting...' : 'Submit / जमा करें'}
+                {contactLoading ? 'Submitting...' : 'Submit / जमा करें / জমা দিন'}
               </Button>
             </form>
           </Card>
