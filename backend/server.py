@@ -774,13 +774,6 @@ async def create_transaction(transaction: TransactionCreate, request: Request):
     trans_dict["created_at"] = trans_dict["created_at"].isoformat()
     await db.transactions.insert_one(trans_dict)
     
-    # Update budget spent if category matches
-    if transaction.type == "expense":
-        await db.budgets.update_one(
-            {"user_id": user.id, "category": transaction.category},
-            {"$inc": {"spent": transaction.amount}}
-        )
-    
     return new_transaction
 
 @api_router.get("/finance/transactions")
