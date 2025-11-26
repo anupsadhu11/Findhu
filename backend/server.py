@@ -768,36 +768,92 @@ async def submit_contact(contact: ContactRequest):
 
 @api_router.post("/ai/advice")
 async def get_ai_advice(advice_req: AIAdviceRequest, request: Request):
-    """Get AI-powered financial advice"""
+    """Get AI-powered financial advice with conversation memory"""
     user = await require_auth(request)
     
-    # Get user's financial context
-    context_str = ""
-    if advice_req.context:
-        context_str = f"\nUser Context: {advice_req.context}"
+    # Generate or use existing conversation ID
+    conversation_id = advice_req.conversation_id or str(uuid.uuid4())
     
+    # Enhanced system message with Indian financial knowledge
+    enhanced_system_message = """You are an expert financial advisor specializing in Indian rural and semi-urban finance. 
+
+Your expertise includes:
+- Indian Government Schemes: PM-KISAN (₹6000/year for farmers), PMAY (housing), Mudra Loans (up to ₹10 lakh), Kisan Credit Card
+- Banking: Public sector banks (SBI, PNB), RRBs, cooperative banks, Jan Dhan accounts, UPI payments
+- Rural Finance: Agricultural loans, crop insurance (PMFBY), tractor loans, dairy loans
+- Property: 7/12 extracts, land records, property registration, stamp duty by state
+- Tax: Agricultural income exemption, Section 80C deductions, ITR-1 filing for salaried, rebate under Section 87A
+- Investment: PPF (7.1% tax-free), NSC, Sukanya Samriddhi, Post Office schemes, PMVVY for seniors
+- Credit: CIBIL scores, credit cards for first-time users, gold loans from banks
+
+Language: Use simple Hindi-English mix when needed. Explain complex terms in simple language.
+Currency: Always use Indian Rupees (₹) and lakhs/crores format.
+Approach: Be practical, consider rural context, mention government schemes, provide step-by-step guidance.
+
+Remember previous conversation context and provide personalized advice based on user's history."""
+
+    # Retrieve conversation history
+    previous_messages = await db.conversation_messages.find(
+        {"conversation_id": conversation_id, "user_id": user.id}
+    ).sort("created_at", 1).limit(10).to_list(10)
+    
+    # Build context from history
+    conversation_context = ""
+    if previous_messages:
+        conversation_context = "\n\nPrevious Conversation:\n"
+        for msg in previous_messages:
+            role_label = "User" if msg["role"] == "user" else "You"
+            conversation_context += f"{role_label}: {msg['message']}\n"
+        conversation_context += "\nCurrent Question:\n"
+    
+    # Create AI chat with enhanced prompt
     chat = LlmChat(
         api_key=os.environ["EMERGENT_LLM_KEY"],
-        session_id=f"advice_{user.id}",
-        system_message="You are a personal finance advisor for Indian rural customers. Provide advice in simple terms considering Indian context, government schemes, and rural banking options. All amounts are in Indian Rupees (₹)."
+        session_id=f"advice_{user.id}_{conversation_id}",
+        system_message=enhanced_system_message
     ).with_model("openai", "gpt-5.1")
     
-    query = f"{advice_req.query}{context_str}"
-    ai_response = await chat.send_message(UserMessage(text=query))
+    # Combine query with conversation context
+    full_query = f"{conversation_context}User: {advice_req.query}"
+    ai_response = await chat.send_message(UserMessage(text=full_query))
     
-    # Save consultation
+    # Save user message to conversation
+    user_message = ConversationMessage(
+        conversation_id=conversation_id,
+        user_id=user.id,
+        role="user",
+        message=advice_req.query
+    )
+    user_msg_dict = user_message.model_dump()
+    user_msg_dict["created_at"] = user_msg_dict["created_at"].isoformat()
+    await db.conversation_messages.insert_one(user_msg_dict)
+    
+    # Save AI response to conversation
+    ai_message = ConversationMessage(
+        conversation_id=conversation_id,
+        user_id=user.id,
+        role="assistant",
+        message=ai_response
+    )
+    ai_msg_dict = ai_message.model_dump()
+    ai_msg_dict["created_at"] = ai_msg_dict["created_at"].isoformat()
+    await db.conversation_messages.insert_one(ai_msg_dict)
+    
+    # Save consultation summary
     consultation = AIConsultation(
         user_id=user.id,
         consultation_type="general_advice",
         query=advice_req.query,
         ai_response=ai_response
     )
-    
     consult_dict = consultation.model_dump()
     consult_dict["created_at"] = consult_dict["created_at"].isoformat()
     await db.ai_consultations.insert_one(consult_dict)
     
-    return {"advice": ai_response}
+    return {
+        "advice": ai_response,
+        "conversation_id": conversation_id
+    }
 
 # Include the router in the main app
 app.include_router(api_router)
