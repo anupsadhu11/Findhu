@@ -883,25 +883,23 @@ async def get_dashboard(request: Request):
     user = await require_auth(request)
     
     # Get aggregated data
-    budgets = await db.budgets.find({"user_id": user.id}, {"_id": 0}).to_list(100)
     transactions = await db.transactions.find({"user_id": user.id}, {"_id": 0}).sort("date", -1).limit(10).to_list(10)
     bills = await db.bills.find({"user_id": user.id, "status": "pending"}, {"_id": 0}).to_list(100)
     goals = await db.financial_goals.find({"user_id": user.id}, {"_id": 0}).to_list(100)
     
-    # Calculate totals
-    total_budget = sum(b["amount"] for b in budgets)
-    total_spent = sum(b["spent"] for b in budgets)
+    # Calculate totals from transactions
+    total_income = sum(t["amount"] for t in transactions if t["type"] == "income")
+    total_expense = sum(t["amount"] for t in transactions if t["type"] == "expense")
     upcoming_bills = sum(b["amount"] for b in bills)
     
     return {
-        "budgets": budgets,
         "recent_transactions": transactions,
         "upcoming_bills": bills[:5],
         "goals": goals,
         "summary": {
-            "total_budget": total_budget,
-            "total_spent": total_spent,
-            "remaining": total_budget - total_spent,
+            "total_income": total_income,
+            "total_expense": total_expense,
+            "savings": total_income - total_expense,
             "upcoming_bills_amount": upcoming_bills
         }
     }
