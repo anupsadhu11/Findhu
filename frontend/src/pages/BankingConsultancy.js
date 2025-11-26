@@ -47,6 +47,15 @@ const BankingConsultancy = () => {
     credit_utilization: ''
   });
 
+  // EMI Calculator State
+  const [emiData, setEmiData] = useState({
+    principal: '',
+    interest_rate: '',
+    tenure: '',
+    tenure_type: 'months'
+  });
+  const [emiResult, setEmiResult] = useState(null);
+
   const handleLoanCheck = async () => {
     if (!loanData.loan_type || !loanData.amount || !loanData.annual_income || !loanData.credit_score) {
       toast.error('Please fill in all required fields');
