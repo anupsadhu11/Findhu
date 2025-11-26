@@ -25,7 +25,7 @@ const AIAdvisor = () => {
 
     try {
       const response = await axios.post(
-        `${API}/finance/ai-advice`,
+        `${API}/ai/advice`,
         { query: userMessage },
         { withCredentials: true }
       );
