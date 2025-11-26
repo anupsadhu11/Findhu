@@ -855,6 +855,49 @@ Remember previous conversation context and provide personalized advice based on 
         "conversation_id": conversation_id
     }
 
+@api_router.get("/ai/conversations")
+async def get_user_conversations(request: Request):
+    """Get user's conversation history"""
+    user = await require_auth(request)
+    
+    # Get distinct conversation IDs for this user
+    pipeline = [
+        {"$match": {"user_id": user.id}},
+        {"$group": {
+            "_id": "$conversation_id",
+            "last_message": {"$last": "$message"},
+            "created_at": {"$last": "$created_at"}
+        }},
+        {"$sort": {"created_at": -1}},
+        {"$limit": 20}
+    ]
+    
+    conversations = await db.conversation_messages.aggregate(pipeline).to_list(20)
+    
+    return [
+        {
+            "conversation_id": conv["_id"],
+            "preview": conv["last_message"][:100] + "..." if len(conv["last_message"]) > 100 else conv["last_message"],
+            "last_updated": conv["created_at"]
+        }
+        for conv in conversations
+    ]
+
+@api_router.delete("/ai/conversation/{conversation_id}")
+async def clear_conversation(conversation_id: str, request: Request):
+    """Clear a conversation"""
+    user = await require_auth(request)
+    
+    result = await db.conversation_messages.delete_many({
+        "conversation_id": conversation_id,
+        "user_id": user.id
+    })
+    
+    return {
+        "success": True,
+        "deleted_count": result.deleted_count
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
