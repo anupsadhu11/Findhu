@@ -174,11 +174,11 @@ const TaxFiling = () => {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-white rounded-xl p-4">
                     <p className="text-sm text-slate-600 mb-1">Taxable Income</p>
-                    <p className="text-2xl font-bold text-slate-900">${result.taxable_income?.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-slate-900">₹{result.taxable_income?.toLocaleString('en-IN')}</p>
                   </div>
                   <div className="bg-white rounded-xl p-4">
                     <p className="text-sm text-slate-600 mb-1">Tax Owed</p>
-                    <p className="text-2xl font-bold text-rose-600">${result.tax_owed?.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-rose-600">₹{result.tax_owed?.toLocaleString('en-IN')}</p>
                   </div>
                   <div className="bg-white rounded-xl p-4 col-span-2">
                     <p className="text-sm text-slate-600 mb-1">Effective Tax Rate</p>
