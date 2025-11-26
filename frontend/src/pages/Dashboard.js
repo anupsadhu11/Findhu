@@ -180,7 +180,7 @@ const Dashboard = () => {
                     <span className={`font-semibold ${
                       transaction.type === 'income' ? 'text-emerald-600' : 'text-rose-600'
                     }`}>
-                      {transaction.type === 'income' ? '+' : '-'}${transaction.amount}
+                      {transaction.type === 'income' ? '+' : '-'}₹{transaction.amount?.toLocaleString('en-IN')}
                     </span>
                   </div>
                 ))}
