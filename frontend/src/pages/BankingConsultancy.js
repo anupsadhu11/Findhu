@@ -148,6 +148,35 @@ const BankingConsultancy = () => {
     }
   };
 
+  const calculateEMI = () => {
+    if (!emiData.principal || !emiData.interest_rate || !emiData.tenure) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    const principal = parseFloat(emiData.principal);
+    const annualRate = parseFloat(emiData.interest_rate);
+    const monthlyRate = annualRate / 12 / 100;
+    const tenureMonths = emiData.tenure_type === 'years' 
+      ? parseInt(emiData.tenure) * 12 
+      : parseInt(emiData.tenure);
+
+    // EMI Formula: P * r * (1 + r)^n / ((1 + r)^n - 1)
+    const emi = principal * monthlyRate * Math.pow(1 + monthlyRate, tenureMonths) / (Math.pow(1 + monthlyRate, tenureMonths) - 1);
+    const totalPayment = emi * tenureMonths;
+    const totalInterest = totalPayment - principal;
+
+    setEmiResult({
+      emi: Math.round(emi),
+      totalInterest: Math.round(totalInterest),
+      totalPayment: Math.round(totalPayment),
+      principal: principal,
+      tenureMonths: tenureMonths
+    });
+
+    toast.success('EMI calculated successfully!');
+  };
+
   return (
     <Layout>
       <div className="p-6 lg:p-8" data-testid="banking-consultancy">
