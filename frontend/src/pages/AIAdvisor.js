@@ -13,6 +13,7 @@ const AIAdvisor = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [conversationId, setConversationId] = useState(null);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -26,9 +27,17 @@ const AIAdvisor = () => {
     try {
       const response = await axios.post(
         `${API}/ai/advice`,
-        { query: userMessage },
+        { 
+          query: userMessage,
+          conversation_id: conversationId 
+        },
         { withCredentials: true }
       );
+      
+      // Store conversation ID for memory
+      if (response.data.conversation_id) {
+        setConversationId(response.data.conversation_id);
+      }
       
       setMessages(prev => [...prev, { 
         role: 'assistant', 
