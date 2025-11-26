@@ -7,7 +7,6 @@ import Dashboard from "./pages/Dashboard";
 import BankingConsultancy from "./pages/BankingConsultancy";
 import Property from "./pages/Property";
 import TaxFiling from "./pages/TaxFiling";
-import PersonalFinance from "./pages/PersonalFinance";
 import AIAdvisor from "./pages/AIAdvisor";
 import { Toaster } from "@/components/ui/sonner";
 
