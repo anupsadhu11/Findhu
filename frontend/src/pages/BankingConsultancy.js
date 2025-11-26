@@ -490,12 +490,12 @@ const BankingConsultancy = () => {
                 <h2 className="text-xl font-bold text-slate-900 mb-6">Create Savings Plan</h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="goal-amount">Goal Amount ($)</Label>
+                    <Label htmlFor="goal-amount">Goal Amount (₹)</Label>
                     <Input
                       id="goal-amount"
                       data-testid="goal-amount-input"
                       type="number"
-                      placeholder="20000"
+                      placeholder="200000"
                       value={savingsData.goal_amount}
                       onChange={(e) => setSavingsData({...savingsData, goal_amount: e.target.value})}
                     />
@@ -512,12 +512,12 @@ const BankingConsultancy = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="monthly-income-savings">Monthly Income ($)</Label>
+                    <Label htmlFor="monthly-income-savings">Monthly Income (₹)</Label>
                     <Input
                       id="monthly-income-savings"
                       data-testid="monthly-income-savings-input"
                       type="number"
-                      placeholder="5000"
+                      placeholder="50000"
                       value={savingsData.monthly_income}
                       onChange={(e) => setSavingsData({...savingsData, monthly_income: e.target.value})}
                     />
