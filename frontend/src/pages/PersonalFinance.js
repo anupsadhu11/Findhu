@@ -137,16 +137,15 @@ const PersonalFinance = () => {
           <p className="text-slate-600">Track budgets, expenses, bills, and goals</p>
         </div>
 
-        <Tabs defaultValue="budget" className="space-y-6">
-          <TabsList className="grid grid-cols-2 lg:grid-cols-4 w-full max-w-3xl">
-            <TabsTrigger value="budget" data-testid="tab-budget">Budget</TabsTrigger>
+        <Tabs defaultValue="transactions" className="space-y-6">
+          <TabsList className="grid grid-cols-3 w-full max-w-2xl">
             <TabsTrigger value="transactions" data-testid="tab-transactions">Transactions</TabsTrigger>
             <TabsTrigger value="bills" data-testid="tab-bills">Bills</TabsTrigger>
             <TabsTrigger value="goals" data-testid="tab-goals">Goals</TabsTrigger>
           </TabsList>
 
-          {/* Budget */}
-          <TabsContent value="budget">
+          {/* Transactions */}
+          <TabsContent value="transactions">
             <div className="grid lg:grid-cols-3 gap-6">
               <Card className="p-6 rounded-2xl border-2 border-slate-100">
                 <h2 className="text-xl font-bold text-slate-900 mb-4">Add Budget</h2>
