@@ -425,12 +425,12 @@ const BankingConsultancy = () => {
                 <h2 className="text-xl font-bold text-slate-900 mb-6">Investment Analysis</h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="investment-amount">Investment Amount ($)</Label>
+                    <Label htmlFor="investment-amount">Investment Amount (₹)</Label>
                     <Input
                       id="investment-amount"
                       data-testid="investment-amount-input"
                       type="number"
-                      placeholder="25000"
+                      placeholder="250000"
                       value={investmentData.investment_amount}
                       onChange={(e) => setInvestmentData({...investmentData, investment_amount: e.target.value})}
                     />
