@@ -115,6 +115,11 @@ function App() {
                 <BankingConsultancy />
               </ProtectedRoute>
             } />
+            <Route path="/property" element={
+              <ProtectedRoute>
+                <Property />
+              </ProtectedRoute>
+            } />
             <Route path="/tax" element={
               <ProtectedRoute>
                 <TaxFiling />
