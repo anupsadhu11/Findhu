@@ -201,7 +201,7 @@ const Dashboard = () => {
                       <p className="font-medium text-slate-900">{bill.name}</p>
                       <p className="text-sm text-slate-500">Due: {bill.due_date}</p>
                     </div>
-                    <span className="font-semibold text-amber-600">${bill.amount}</span>
+                    <span className="font-semibold text-amber-600">₹{bill.amount?.toLocaleString('en-IN')}</span>
                   </div>
                 ))}
               </div>
