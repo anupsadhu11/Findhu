@@ -58,7 +58,7 @@ const Landing = () => {
             <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-xl">F</span>
             </div>
-            <span className="text-2xl font-bold text-slate-800">FinWise</span>
+            <span className="text-2xl font-bold text-slate-800">Findhu</span>
           </div>
           <Button 
             onClick={handleLogin}
