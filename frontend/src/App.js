@@ -5,6 +5,7 @@ import axios from "axios";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import BankingConsultancy from "./pages/BankingConsultancy";
+import Property from "./pages/Property";
 import TaxFiling from "./pages/TaxFiling";
 import PersonalFinance from "./pages/PersonalFinance";
 import AIAdvisor from "./pages/AIAdvisor";
