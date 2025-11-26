@@ -1,12 +1,21 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Landing = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [contactLoading, setContactLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -17,6 +26,27 @@ const Landing = () => {
   const handleLogin = () => {
     const redirectUrl = `${window.location.origin}/dashboard`;
     window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+  };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactLoading(true);
+    const formData = new FormData(e.target);
+    
+    try {
+      await axios.post(`${API}/contact`, {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        message: formData.get('message')
+      });
+      toast.success('Thank you! We will contact you soon.');
+      e.target.reset();
+    } catch (error) {
+      toast.error('Failed to submit. Please try again.');
+    } finally {
+      setContactLoading(false);
+    }
   };
 
   return (
@@ -44,17 +74,17 @@ const Landing = () => {
       <section className="pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-block mb-4 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
-            AI-Powered Financial Solutions
+            AI-Powered Financial Solutions for Rural India
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-tight">
-            Your Complete
+            आपका विश्वसनीय
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
               Financial Partner
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Banking consultancy, tax filing, and personal finance advice—all powered by advanced AI. 
-            Make smarter financial decisions with expert guidance at your fingertips.
+            Banking consultancy, tax filing, property verification, and personal finance advice—all in one place. 
+            Designed for rural and semi-urban India with simple Hindi & English support.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button 
@@ -65,10 +95,11 @@ const Landing = () => {
               Get Started Free
             </Button>
             <Button 
+              onClick={() => document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
               className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 px-8 py-6 rounded-full text-lg font-semibold"
             >
-              Watch Demo
+              Contact Us
             </Button>
           </div>
         </div>
@@ -79,10 +110,10 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              Everything You Need
+              सभी सेवाएं एक जगह
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Comprehensive financial solutions designed to help you succeed
+              Complete financial solutions designed for Indian rural customers
             </p>
           </div>
 
@@ -95,120 +126,181 @@ const Landing = () => {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">Banking Consultancy</h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">Loan eligibility checks, investment advice, savings plans, and credit score analysis—all in one place.</p>
+              <p className="text-slate-600 mb-4 leading-relaxed">Loan eligibility, investment advice, savings plans, and credit score analysis for rural customers.</p>
               <ul className="space-y-2 text-sm text-slate-600">
                 <li className="flex items-center">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                  Instant loan eligibility
+                  Kisan Credit Card guidance
                 </li>
                 <li className="flex items-center">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                  Portfolio recommendations
+                  PMJDY account benefits
                 </li>
                 <li className="flex items-center">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                  Credit score insights
+                  Mudra loan eligibility
+                </li>
+              </ul>
+            </Card>
+
+            {/* Property Services */}
+            <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover">
+              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">Property Services</h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">Legal verification, encumbrance check, and AI-powered property valuation for rural land & houses.</p>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
+                  7/12 document verification
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
+                  Property ownership check
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
+                  Market valuation in ₹
                 </li>
               </ul>
             </Card>
 
             {/* Tax Filing */}
             <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover">
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Tax Filing Service</h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">Smart tax calculations, document management, and AI-powered optimization to maximize your returns.</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">Tax Filing</h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">Simple tax calculator for farmers and rural income with optimization tips in Hindi.</p>
               <ul className="space-y-2 text-sm text-slate-600">
                 <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
-                  Automated calculations
+                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
+                  Agriculture income tax
                 </li>
                 <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
-                  Document organization
+                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
+                  Section 80 deductions
                 </li>
                 <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
-                  Tax optimization tips
+                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
+                  Simple ITR filing
                 </li>
               </ul>
             </Card>
 
             {/* Personal Finance */}
             <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover">
-              <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">Personal Finance</h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">Track budgets, manage expenses, set financial goals, and get AI recommendations tailored to you.</p>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
-                  Budget tracking
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
-                  Bill reminders
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
-                  Goal planning
-                </li>
-              </ul>
+              <p className="text-slate-600 mb-4 leading-relaxed">Track income & expenses, bill reminders, and financial goal planning.</p>
             </Card>
 
             {/* AI Advisor */}
-            <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover md:col-span-2 lg:col-span-1">
+            <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover">
               <div className="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">AI Financial Advisor</h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">Chat with GPT-5.1 for personalized financial advice, insights, and strategies based on your unique situation.</p>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-violet-500 rounded-full mr-2"></span>
-                  24/7 AI assistance
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-violet-500 rounded-full mr-2"></span>
-                  Personalized advice
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1.5 h-1.5 bg-violet-500 rounded-full mr-2"></span>
-                  Context-aware responses
-                </li>
-              </ul>
+              <p className="text-slate-600 mb-4 leading-relaxed">24/7 AI advisor understanding rural India context with answers in simple language.</p>
             </Card>
 
-            {/* Investment Advisory */}
-            <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover">
-              <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Investment Advisory</h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">Get personalized portfolio recommendations based on your risk tolerance and financial goals.</p>
-            </Card>
-
-            {/* Savings Plans */}
+            {/* Government Schemes */}
             <Card className="p-8 border-2 border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 rounded-2xl card-hover">
               <div className="w-14 h-14 bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Smart Savings Plans</h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">Create customized savings strategies to reach your financial milestones faster.</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">Government Schemes</h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">Information on PM-KISAN, PMAY, and other rural development schemes.</p>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact-section" className="py-20 px-6 bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+              Contact Us / संपर्क करें
+            </h2>
+            <p className="text-lg text-slate-600">
+              Have questions? We're here to help. Reach out to us!
+            </p>
+          </div>
+
+          <Card className="p-8 lg:p-12 rounded-2xl border-2 border-slate-100">
+            <form onSubmit={handleContactSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="contact-name">Name / नाम *</Label>
+                  <Input 
+                    id="contact-name" 
+                    name="name" 
+                    data-testid="contact-name-input"
+                    placeholder="Your name"
+                    required 
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="contact-phone">Phone / फ़ोन *</Label>
+                  <Input 
+                    id="contact-phone" 
+                    name="phone" 
+                    data-testid="contact-phone-input"
+                    placeholder="+91 98765 43210"
+                    required 
+                    className="mt-2"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="contact-email">Email *</Label>
+                <Input 
+                  id="contact-email" 
+                  name="email" 
+                  data-testid="contact-email-input"
+                  type="email" 
+                  placeholder="your.email@example.com"
+                  required 
+                  className="mt-2"
+                />
+              </div>
+              <div>
+                <Label htmlFor="contact-message">Message / संदेश *</Label>
+                <Textarea 
+                  id="contact-message" 
+                  name="message" 
+                  data-testid="contact-message-input"
+                  placeholder="How can we help you?"
+                  rows={5}
+                  required 
+                  className="mt-2"
+                />
+              </div>
+              <Button 
+                type="submit" 
+                data-testid="contact-submit-button"
+                disabled={contactLoading}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-xl text-lg font-semibold"
+              >
+                {contactLoading ? 'Submitting...' : 'Submit / जमा करें'}
+              </Button>
+            </form>
+          </Card>
         </div>
       </section>
 
@@ -219,7 +311,7 @@ const Landing = () => {
             Ready to Transform Your Finances?
           </h2>
           <p className="text-xl text-emerald-50 mb-10">
-            Join thousands of users making smarter financial decisions every day.
+            Join thousands of rural customers making smarter financial decisions.
           </p>
           <Button 
             onClick={handleLogin}
@@ -241,7 +333,7 @@ const Landing = () => {
             <span className="text-xl font-bold text-white">FinWise</span>
           </div>
           <p className="text-sm">
-            © 2025 FinWise. All rights reserved. | Powered by AI
+            © 2025 FinWise. All rights reserved. | Serving Rural India with Pride
           </p>
         </div>
       </footer>
