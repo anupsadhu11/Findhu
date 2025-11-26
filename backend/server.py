@@ -599,35 +599,162 @@ async def get_tax_history(request: Request):
     
     return calculations
 
-# ============ PERSONAL FINANCE ENDPOINTS ============
+# ============ PROPERTY ENDPOINTS ============
 
-@api_router.post("/finance/budget")
-async def create_budget(budget: BudgetCreate, request: Request):
-    """Create budget category"""
+@api_router.post("/property/legal-search")
+async def property_legal_search(search_req: PropertySearchRequest, request: Request):
+    """Search property legal documents and verification"""
     user = await require_auth(request)
     
-    new_budget = Budget(
+    # Get AI analysis for property legal search
+    chat = LlmChat(
+        api_key=os.environ["EMERGENT_LLM_KEY"],
+        session_id=f"property_search_{user.id}_{uuid.uuid4()}",
+        system_message="You are a property legal expert in India specializing in property verification and legal documentation."
+    ).with_model("openai", "gpt-5.1")
+    
+    query = f"""Provide comprehensive property legal search guidance for:
+- Property Address: {search_req.property_address}
+- Property Type: {search_req.property_type}
+- State: {search_req.state}
+- District: {search_req.district}
+- Search Type: {search_req.search_type}
+
+For Indian rural property context, provide:
+1) Documents required for {search_req.search_type}
+2) Step-by-step verification process
+3) Government offices/portals to check (Sub-Registrar Office, Revenue Department)
+4) Common red flags to watch for
+5) Timeline and costs involved
+6) Online verification options available in {search_req.state}"""
+    
+    ai_response = await chat.send_message(UserMessage(text=query))
+    
+    # Save search request
+    search = PropertySearch(
         user_id=user.id,
-        **budget.model_dump()
+        property_address=search_req.property_address,
+        property_type=search_req.property_type,
+        search_type=search_req.search_type,
+        status="completed",
+        results=ai_response
     )
     
-    budget_dict = new_budget.model_dump()
-    budget_dict["created_at"] = budget_dict["created_at"].isoformat()
-    await db.budgets.insert_one(budget_dict)
+    search_dict = search.model_dump()
+    search_dict["created_at"] = search_dict["created_at"].isoformat()
+    await db.property_searches.insert_one(search_dict)
     
-    return new_budget
+    return {
+        "search_id": search.id,
+        "status": "completed",
+        "results": ai_response
+    }
 
-@api_router.get("/finance/budget")
-async def get_budgets(request: Request):
-    """Get all budgets for user"""
+@api_router.post("/property/valuation")
+async def property_valuation(val_req: PropertyValuationRequest, request: Request):
+    """Get AI-powered property valuation"""
     user = await require_auth(request)
     
-    budgets = await db.budgets.find(
+    # Get AI valuation estimate
+    chat = LlmChat(
+        api_key=os.environ["EMERGENT_LLM_KEY"],
+        session_id=f"valuation_{user.id}_{uuid.uuid4()}",
+        system_message="You are a certified property valuer in India with expertise in rural and urban property valuation."
+    ).with_model("openai", "gpt-5.1")
+    
+    query = f"""Provide detailed property valuation for:
+- Property Address: {val_req.property_address}
+- Property Type: {val_req.property_type}
+- Area: {val_req.area_sqft} sq ft
+- Location: {val_req.location}, {val_req.state}
+- Age: {val_req.age_of_property} years
+- Amenities: {val_req.amenities}
+
+For Indian market context (rural/semi-urban), provide:
+1) Estimated market value range in INR (₹)
+2) Valuation methodology used
+3) Key factors affecting the valuation
+4) Comparison with similar properties in the area
+5) Future appreciation potential
+6) Documentation needed for official valuation
+7) Registered valuer recommendations"""
+    
+    ai_response = await chat.send_message(UserMessage(text=query))
+    
+    # Extract estimated value (simplified - in real scenario would parse AI response)
+    # For now, using a basic calculation as placeholder
+    base_rate = 3000  # ₹ per sq ft (average for semi-urban)
+    estimated_value = val_req.area_sqft * base_rate
+    
+    # Adjust based on age
+    if val_req.age_of_property > 0:
+        depreciation = min(val_req.age_of_property * 0.02, 0.3)  # Max 30% depreciation
+        estimated_value = estimated_value * (1 - depreciation)
+    
+    # Save valuation
+    valuation = PropertyValuation(
+        user_id=user.id,
+        property_address=val_req.property_address,
+        property_type=val_req.property_type,
+        area_sqft=val_req.area_sqft,
+        location=val_req.location,
+        estimated_value=estimated_value,
+        valuation_details=ai_response
+    )
+    
+    valuation_dict = valuation.model_dump()
+    valuation_dict["created_at"] = valuation_dict["created_at"].isoformat()
+    await db.property_valuations.insert_one(valuation_dict)
+    
+    return {
+        "estimated_value": round(estimated_value, 2),
+        "valuation_details": ai_response
+    }
+
+@api_router.get("/property/searches")
+async def get_property_searches(request: Request):
+    """Get user's property search history"""
+    user = await require_auth(request)
+    
+    searches = await db.property_searches.find(
         {"user_id": user.id},
         {"_id": 0}
-    ).to_list(100)
+    ).sort("created_at", -1).to_list(100)
     
-    return budgets
+    return searches
+
+@api_router.get("/property/valuations")
+async def get_property_valuations(request: Request):
+    """Get user's property valuation history"""
+    user = await require_auth(request)
+    
+    valuations = await db.property_valuations.find(
+        {"user_id": user.id},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    
+    return valuations
+
+# ============ CONTACT ENDPOINT ============
+
+@api_router.post("/contact")
+async def submit_contact(contact: ContactRequest):
+    """Submit contact form"""
+    # Save to database
+    contact_dict = {
+        "id": str(uuid.uuid4()),
+        "name": contact.name,
+        "email": contact.email,
+        "phone": contact.phone,
+        "message": contact.message,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.contact_submissions.insert_one(contact_dict)
+    
+    return {"success": True, "message": "Thank you! We will contact you soon."}
+
+# ============ PERSONAL FINANCE ENDPOINTS ============
 
 @api_router.post("/finance/transaction")
 async def create_transaction(transaction: TransactionCreate, request: Request):
