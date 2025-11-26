@@ -55,21 +55,42 @@ const AIAdvisor = () => {
     }
   };
 
+  const handleNewConversation = () => {
+    setMessages([]);
+    setConversationId(null);
+    toast.success('New conversation started');
+  };
+
   const suggestedQuestions = [
-    'How should I allocate my savings between emergency fund and investments?',
-    'What are some effective strategies to reduce my monthly expenses?',
-    'Should I pay off debt or invest first?',
-    'How can I improve my credit score quickly?'
+    'What government schemes are available for farmers in India?',
+    'How do I apply for a Kisan Credit Card?',
+    'What is the process for property registration in rural areas?',
+    'How can I get a Mudra loan for my small business?'
   ];
 
   return (
     <Layout>
       <div className="p-6 lg:p-8 h-[calc(100vh-80px)]" data-testid="ai-advisor">
-        <div className="mb-6">
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
-            AI Financial Advisor
-          </h1>
-          <p className="text-slate-600">Get personalized financial advice powered by GPT-5.1</p>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
+              AI Financial Advisor
+            </h1>
+            <p className="text-slate-600">Get personalized advice powered by GPT-5.1 with conversation memory</p>
+          </div>
+          {messages.length > 0 && (
+            <Button 
+              onClick={handleNewConversation}
+              data-testid="new-conversation-button"
+              variant="outline"
+              className="border-2 border-violet-300 text-violet-600 hover:bg-violet-50 px-4 py-2 rounded-xl font-semibold flex items-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              <span>New Chat</span>
+            </Button>
+          )}
         </div>
 
         <Card className="h-[calc(100vh-250px)] rounded-2xl border-2 border-slate-100 flex flex-col">
