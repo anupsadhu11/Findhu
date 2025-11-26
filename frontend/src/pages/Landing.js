@@ -77,14 +77,14 @@ const Landing = () => {
             AI-Powered Financial Solutions for Rural India
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-tight">
-            आपका विश्वसनीय
+            आपका विश्वसनीय / আপনার বিশ্বস্ত
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
               Financial Partner
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed">
             Banking consultancy, tax filing, property verification, and personal finance advice—all in one place. 
-            Designed for rural and semi-urban India with simple Hindi & English support.
+            Designed for rural and semi-urban India with Hindi, Bengali & English support.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button 
