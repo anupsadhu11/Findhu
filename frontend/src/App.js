@@ -124,11 +124,6 @@ function App() {
                 <TaxFiling />
               </ProtectedRoute>
             } />
-            <Route path="/finance" element={
-              <ProtectedRoute>
-                <PersonalFinance />
-              </ProtectedRoute>
-            } />
             <Route path="/ai-advisor" element={
               <ProtectedRoute>
                 <AIAdvisor />
