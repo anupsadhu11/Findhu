@@ -63,9 +63,9 @@ const AIAdvisor = () => {
 
   const suggestedQuestions = [
     'What government schemes are available for farmers in India?',
+    'ভারতে কৃষকদের জন্য কী কী সরকারি প্রকল্প আছে?',
     'How do I apply for a Kisan Credit Card?',
-    'What is the process for property registration in rural areas?',
-    'How can I get a Mudra loan for my small business?'
+    'আমি কিভাবে মুদ্রা ঋণের জন্য আবেদন করব?'
   ];
 
   return (
