@@ -87,7 +87,7 @@ const Dashboard = () => {
         <Card className="p-8 rounded-2xl border-2 border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-slate-900 mb-3">
-              Welcome to FinWise - Your Financial Consultancy Partner
+              स्वागत है / স্বাগতম - Welcome to FinWise
             </h2>
             <p className="text-slate-600 mb-6">
               Get expert guidance on banking, property, tax, and financial planning. Select a service below to get started.
@@ -96,7 +96,7 @@ const Dashboard = () => {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="font-medium">All services powered by AI</span>
+              <span className="font-medium">सभी सेवाएं AI द्वारा संचालित / সমস্ত সেবা AI চালিত</span>
             </div>
           </div>
         </Card>
