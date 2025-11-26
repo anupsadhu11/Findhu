@@ -202,11 +202,11 @@ const TaxFiling = () => {
                     <div key={index} className="p-4 bg-slate-50 rounded-xl">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-semibold text-slate-900">{item.tax_year}</span>
-                        <span className="text-rose-600 font-semibold">${item.tax_owed?.toLocaleString()}</span>
+                        <span className="text-rose-600 font-semibold">₹{item.tax_owed?.toLocaleString('en-IN')}</span>
                       </div>
                       <div className="text-sm text-slate-600">
-                        <p>Income: ${item.income?.toLocaleString()}</p>
-                        <p>Deductions: ${item.deductions?.toLocaleString()}</p>
+                        <p>Income: ₹{item.income?.toLocaleString('en-IN')}</p>
+                        <p>Deductions: ₹{item.deductions?.toLocaleString('en-IN')}</p>
                       </div>
                     </div>
                   ))}
