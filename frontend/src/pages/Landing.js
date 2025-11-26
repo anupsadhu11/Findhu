@@ -110,7 +110,7 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              सभी सेवाएं एक जगह
+              सभी सेवाएं एक जगह / সমস্ত সেবা এক জায়গায়
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Complete financial solutions designed for Indian rural customers
