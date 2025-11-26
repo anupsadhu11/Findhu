@@ -789,33 +789,6 @@ async def get_ai_advice(advice_req: AIAdviceRequest, request: Request):
     
     return {"advice": ai_response}
 
-@api_router.get("/finance/dashboard")
-async def get_dashboard(request: Request):
-    """Get dashboard summary"""
-    user = await require_auth(request)
-    
-    # Get aggregated data
-    transactions = await db.transactions.find({"user_id": user.id}, {"_id": 0}).sort("date", -1).limit(10).to_list(10)
-    bills = await db.bills.find({"user_id": user.id, "status": "pending"}, {"_id": 0}).to_list(100)
-    goals = await db.financial_goals.find({"user_id": user.id}, {"_id": 0}).to_list(100)
-    
-    # Calculate totals from transactions
-    total_income = sum(t["amount"] for t in transactions if t["type"] == "income")
-    total_expense = sum(t["amount"] for t in transactions if t["type"] == "expense")
-    upcoming_bills = sum(b["amount"] for b in bills)
-    
-    return {
-        "recent_transactions": transactions,
-        "upcoming_bills": bills[:5],
-        "goals": goals,
-        "summary": {
-            "total_income": total_income,
-            "total_expense": total_expense,
-            "savings": total_income - total_expense,
-            "upcoming_bills_amount": upcoming_bills
-        }
-    }
-
 # Include the router in the main app
 app.include_router(api_router)
 
