@@ -64,6 +64,12 @@ const TaxFiling = () => {
     }
   };
 
+  const handleFileITR = () => {
+    // Redirect to Income Tax e-Filing portal
+    window.open('https://www.incometax.gov.in/iec/folitr/', '_blank');
+    toast.success('Opening Income Tax e-Filing portal...');
+  };
+
   return (
     <Layout>
       <div className="p-6 lg:p-8" data-testid="tax-filing">
