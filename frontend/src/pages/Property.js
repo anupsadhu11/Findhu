@@ -103,8 +103,9 @@ const Property = () => {
         </div>
 
         <Tabs defaultValue="legal" className="space-y-6">
-          <TabsList className="grid grid-cols-2 w-full max-w-md">
+          <TabsList className="grid grid-cols-3 w-full max-w-2xl">
             <TabsTrigger value="legal" data-testid="tab-legal">Legal Search</TabsTrigger>
+            <TabsTrigger value="land-records" data-testid="tab-land-records">Land Records</TabsTrigger>
             <TabsTrigger value="valuation" data-testid="tab-valuation">Valuation</TabsTrigger>
           </TabsList>
 
