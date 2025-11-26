@@ -188,8 +188,9 @@ const BankingConsultancy = () => {
         </div>
 
         <Tabs defaultValue="loan" className="space-y-6">
-          <TabsList className="grid grid-cols-3 lg:grid-cols-5 w-full max-w-4xl">
+          <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full max-w-5xl">
             <TabsTrigger value="loan" data-testid="tab-loan">Loan Eligibility</TabsTrigger>
+            <TabsTrigger value="digital-loan" data-testid="tab-digital-loan">Digital Loans</TabsTrigger>
             <TabsTrigger value="emi" data-testid="tab-emi">EMI Calculator</TabsTrigger>
             <TabsTrigger value="investment" data-testid="tab-investment">Investment</TabsTrigger>
             <TabsTrigger value="savings" data-testid="tab-savings">Savings Plan</TabsTrigger>
