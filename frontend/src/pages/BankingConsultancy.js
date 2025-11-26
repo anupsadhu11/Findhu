@@ -217,12 +217,12 @@ const BankingConsultancy = () => {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="loan-amount">Loan Amount ($)</Label>
+                    <Label htmlFor="loan-amount">Loan Amount (₹)</Label>
                     <Input
                       id="loan-amount"
                       data-testid="loan-amount-input"
                       type="number"
-                      placeholder="50000"
+                      placeholder="500000"
                       value={loanData.amount}
                       onChange={(e) => setLoanData({...loanData, amount: e.target.value})}
                     />
@@ -238,12 +238,12 @@ const BankingConsultancy = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="annual-income">Annual Income ($)</Label>
+                    <Label htmlFor="annual-income">Annual Income (₹)</Label>
                     <Input
                       id="annual-income"
                       data-testid="annual-income-input"
                       type="number"
-                      placeholder="75000"
+                      placeholder="750000"
                       value={loanData.annual_income}
                       onChange={(e) => setLoanData({...loanData, annual_income: e.target.value})}
                     />
@@ -260,12 +260,12 @@ const BankingConsultancy = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="existing-loans">Existing Loans ($)</Label>
+                    <Label htmlFor="existing-loans">Existing Loans (₹)</Label>
                     <Input
                       id="existing-loans"
                       data-testid="existing-loans-input"
                       type="number"
-                      placeholder="10000"
+                      placeholder="100000"
                       value={loanData.existing_loans}
                       onChange={(e) => setLoanData({...loanData, existing_loans: e.target.value})}
                     />
