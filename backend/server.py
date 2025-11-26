@@ -857,7 +857,7 @@ async def get_ai_advice(advice_req: AIAdviceRequest, request: Request):
     chat = LlmChat(
         api_key=os.environ["EMERGENT_LLM_KEY"],
         session_id=f"advice_{user.id}",
-        system_message="You are a personal finance advisor providing helpful, actionable advice."
+        system_message="You are a personal finance advisor for Indian rural customers. Provide advice in simple terms considering Indian context, government schemes, and rural banking options. All amounts are in Indian Rupees (₹)."
     ).with_model("openai", "gpt-5.1")
     
     query = f"{advice_req.query}{context_str}"
