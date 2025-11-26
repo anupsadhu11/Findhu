@@ -231,7 +231,17 @@ class AIConsultation(BaseModel):
 
 class AIAdviceRequest(BaseModel):
     query: str
+    conversation_id: Optional[str] = None
     context: Optional[dict] = None
+
+class ConversationMessage(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    conversation_id: str
+    user_id: str
+    role: str  # user or assistant
+    message: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 # ============ AUTH HELPERS ============
 
