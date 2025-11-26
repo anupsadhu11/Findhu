@@ -104,9 +104,15 @@ const AIAdvisor = () => {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">How can I help you today?</h3>
-                <p className="text-slate-600 text-center mb-6 max-w-md">
-                  Ask me anything about personal finance, investments, budgeting, or tax strategies.
+                <p className="text-slate-600 text-center mb-4 max-w-md">
+                  Ask me anything about Indian finance, government schemes, property, or rural banking.
                 </p>
+                <div className="flex items-center space-x-2 text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full mb-6">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm font-medium">AI remembers your conversation for personalized advice</span>
+                </div>
                 <div className="grid sm:grid-cols-2 gap-3 max-w-2xl">
                   {suggestedQuestions.map((question, index) => (
                     <Button
