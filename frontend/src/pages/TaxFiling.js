@@ -108,23 +108,23 @@ const TaxFiling = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="annual-income-tax">Annual Income ($)</Label>
+                <Label htmlFor="annual-income-tax">Annual Income (₹)</Label>
                 <Input
                   id="annual-income-tax"
                   data-testid="annual-income-tax-input"
                   type="number"
-                  placeholder="75000"
+                  placeholder="750000"
                   value={taxData.annual_income}
                   onChange={(e) => setTaxData({...taxData, annual_income: e.target.value})}
                 />
               </div>
               <div>
-                <Label htmlFor="deductions">Deductions ($)</Label>
+                <Label htmlFor="deductions">Deductions (₹)</Label>
                 <Input
                   id="deductions"
                   data-testid="deductions-input"
                   type="number"
-                  placeholder="12000"
+                  placeholder="50000"
                   value={taxData.deductions}
                   onChange={(e) => setTaxData({...taxData, deductions: e.target.value})}
                 />
