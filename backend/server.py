@@ -66,20 +66,50 @@ class FinancialProfile(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-class Budget(BaseModel):
+class PropertySearch(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    category: str
-    amount: float
-    period: str  # monthly, yearly
-    spent: float = 0.0
+    property_address: str
+    property_type: str
+    search_type: str  # legal_verification, ownership, encumbrance
+    status: str = "pending"
+    results: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-class BudgetCreate(BaseModel):
-    category: str
-    amount: float
-    period: str
+class PropertySearchRequest(BaseModel):
+    property_address: str
+    property_type: str
+    search_type: str
+    state: str
+    district: str
+
+class PropertyValuation(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    property_address: str
+    property_type: str
+    area_sqft: float
+    location: str
+    estimated_value: float
+    valuation_details: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class PropertyValuationRequest(BaseModel):
+    property_address: str
+    property_type: str
+    area_sqft: float
+    location: str
+    state: str
+    age_of_property: Optional[int] = 0
+    amenities: Optional[str] = ""
+
+class ContactRequest(BaseModel):
+    name: str
+    email: str
+    phone: str
+    message: str
 
 class Transaction(BaseModel):
     model_config = ConfigDict(extra="ignore")
