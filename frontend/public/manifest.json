@@ -1,0 +1,73 @@
+{
+  "name": "Findhu - Financial Consultancy for Rural India",
+  "short_name": "Findhu",
+  "description": "Banking consultancy, property services, tax filing and AI financial advisor for rural India. Hindi, Bengali & English support.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "orientation": "portrait",
+  "categories": ["finance", "business", "productivity"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Banking Consultancy",
+      "short_name": "Banking",
+      "description": "Access banking loans and services",
+      "url": "/banking",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Property Services",
+      "short_name": "Property",
+      "description": "Property legal search and valuation",
+      "url": "/property",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "AI Advisor",
+      "short_name": "AI Help",
+      "description": "Get AI financial advice",
+      "url": "/ai-advisor",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
